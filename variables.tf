@@ -31,18 +31,6 @@ variable "flavor_id" {
   type        = string
 }
 
-
-variable "cloud_init_volume_pool" {
-  description = "Name of the volume pool that will contain the cloud init volume"
-  type        = string
-}
-
-variable "cloud_init_volume_name" {
-  description = "Name of the cloud init volume"
-  type        = string
-  default     = ""
-}
-
 variable "ssh_admin_user" { 
   description = "Pre-existing ssh admin user of the image"
   type        = string
@@ -147,6 +135,47 @@ variable "etcd_backend" {
       key         = ""
       username    = ""
       password    = ""
+    }
+  }
+}
+
+variable "fluentbit" {
+  description = "Fluent-bit configuration"
+  sensitive = true
+  type = object({
+    enabled = bool
+    containerd_tag = string
+    kubelet_tag = string
+    etcd_tag = string
+    node_exporter_tag = string
+    metrics = object({
+      enabled = bool
+      port    = number
+    })
+    forward = object({
+      domain = string
+      port = number
+      hostname = string
+      shared_key = string
+      ca_cert = string
+    })
+  })
+  default = {
+    enabled = false
+    containerd_tag = ""
+    kubelet_tag = ""
+    etcd_tag = ""
+    node_exporter_tag = ""
+    metrics = {
+      enabled = false
+      port = 0
+    }
+    forward = {
+      domain = ""
+      port = 0
+      hostname = ""
+      shared_key = ""
+      ca_cert = ""
     }
   }
 }

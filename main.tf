@@ -31,6 +31,11 @@ locals {
         content      = module.prometheus_node_exporter_configs.configuration
       }
     ],
+    var.fluentbit.enabled ? [{
+      filename     = "fluent_bit.cfg"
+      content_type = "text/cloud-config"
+      content      = module.fluentbit_configs.configuration
+    }] : [],
     var.chrony.enabled ? [{
       filename     = "chrony.cfg"
       content_type = "text/cloud-config"
@@ -40,7 +45,7 @@ locals {
 }
 
 module "vault_configs" {
-  source               = "git::https://github.com/Ferlab-Ste-Justine/terraform-cloudinit-templates.git//vault?ref=v0.8.0"
+  source               = "git::https://github.com/Ferlab-Ste-Justine/terraform-cloudinit-templates.git//vault?ref=v0.15.0"
   install_dependencies = var.install_dependencies
   hostname             = var.name
   release_version      = var.release_version
@@ -49,17 +54,46 @@ module "vault_configs" {
 }
 
 module "prometheus_node_exporter_configs" {
-  source               = "git::https://github.com/Ferlab-Ste-Justine/terraform-cloudinit-templates.git//prometheus-node-exporter?ref=v0.8.0"
+  source               = "git::https://github.com/Ferlab-Ste-Justine/terraform-cloudinit-templates.git//prometheus-node-exporter?ref=v0.15.0"
   install_dependencies = var.install_dependencies
 }
 
 module "chrony_configs" {
-  source               = "git::https://github.com/Ferlab-Ste-Justine/terraform-cloudinit-templates.git//chrony?ref=v0.8.0"
+  source               = "git::https://github.com/Ferlab-Ste-Justine/terraform-cloudinit-templates.git//chrony?ref=v0.15.0"
   install_dependencies = var.install_dependencies
   chrony               = {
     servers  = var.chrony.servers
     pools    = var.chrony.pools
     makestep = var.chrony.makestep
+  }
+}
+
+module "fluentbit_configs" {
+  source               = "git::https://github.com/Ferlab-Ste-Justine/terraform-cloudinit-templates.git//fluent-bit?ref=v0.15.0"
+  install_dependencies = true
+  fluentbit = {
+    metrics          = var.fluentbit.metrics
+    systemd_services = concat(
+      var.fluentbit.etcd_tag != "" ? [{
+        tag     = var.fluentbit.etcd_tag
+        service = "etcd.service"
+      }] : [],
+      [
+        {
+          tag     = var.fluentbit.containerd_tag
+          service = "containerd.service"
+        },
+        {
+          tag     = var.fluentbit.kubelet_tag
+          service = "kubelet.service"
+        },
+        {
+          tag     = var.fluentbit.node_exporter_tag
+          service = "node-exporter.service"
+        }
+      ]
+    )
+    forward = var.fluentbit.forward
   }
 }
 
