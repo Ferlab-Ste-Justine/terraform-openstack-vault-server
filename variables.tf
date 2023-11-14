@@ -44,9 +44,26 @@ variable "admin_user_password" {
   default     = ""
 }
 
-variable "ssh_admin_public_key" {
-  description = "Public ssh part of the ssh key the admin will be able to login as"
-  type        = string
+variable "ssh_host_key_rsa" {
+  type = object({
+    public  = string
+    private = string
+  })
+  default = {
+    public  = ""
+    private = ""
+  }
+}
+
+variable "ssh_host_key_ecdsa" {
+  type = object({
+    public  = string
+    private = string
+  })
+  default = {
+    public  = ""
+    private = ""
+  }
 }
 
 variable "keypair_name" {
