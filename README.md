@@ -14,8 +14,6 @@ The module accepts the following input variables:
 - **network_port**: Network port to assign to the VM. Should be of type `openstack_networking_port_v2`.
 - **server_group**: Server group to assign to the VM. Should be of type `openstack_compute_servergroup_v2`.
 - **keypair_name**: Name of the SSH keypair for admin access to the VM.
-- **ssh_admin_user**: Username of the default sudo user in the image. Defaults to "ubuntu".
-- **admin_user_password**: Optional password for the admin user. Note: This does not enable SSH password login.
 - **ssh_admin_public_key**: Public SSH key for admin access.
 - **chrony**: Optional chrony configuration for when you need a more fine-grained ntp setup on your vm. It is an object with the following fields:
   - **enabled**: If set to false (the default), chrony will not be installed and the vm ntp settings will be left to default.

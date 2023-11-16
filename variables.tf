@@ -31,19 +31,6 @@ variable "flavor_id" {
   type        = string
 }
 
-variable "ssh_admin_user" { 
-  description = "Pre-existing ssh admin user of the image"
-  type        = string
-  default     = "ubuntu"
-}
-
-variable "admin_user_password" { 
-  description = "Optional password for admin user"
-  type        = string
-  sensitive   = true
-  default     = ""
-}
-
 variable "ssh_host_key_rsa" {
   type = object({
     public  = string
