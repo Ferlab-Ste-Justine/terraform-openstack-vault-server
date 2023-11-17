@@ -14,8 +14,7 @@ locals {
           "${path.module}/files/user_data.yaml.tpl", 
           {
             hostname             = var.name
-            ssh_host_key_rsa     = var.ssh_host_key_rsa
-            ssh_host_key_ecdsa   = var.ssh_host_key_ecdsa
+            install_dependencies = var.install_dependencies
           }
         )
       },

@@ -31,28 +31,6 @@ variable "flavor_id" {
   type        = string
 }
 
-variable "ssh_host_key_rsa" {
-  type = object({
-    public  = string
-    private = string
-  })
-  default = {
-    public  = ""
-    private = ""
-  }
-}
-
-variable "ssh_host_key_ecdsa" {
-  type = object({
-    public  = string
-    private = string
-  })
-  default = {
-    public  = ""
-    private = ""
-  }
-}
-
 variable "keypair_name" {
   description = "Name of the keypair that will be used by admins to ssh to the node"
   type        = string
