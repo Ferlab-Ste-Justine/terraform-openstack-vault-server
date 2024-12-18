@@ -3,6 +3,11 @@ variable "name" {
   type        = string
 }
 
+variable "hostname" {
+  description = "The hostname used for Vault configuration (api_addr and cluster_addr)"
+  type        = string
+}
+
 variable "network_port" {
   description = "Network port to assign to the node. Should be of type openstack_networking_port_v2"
   type        = any

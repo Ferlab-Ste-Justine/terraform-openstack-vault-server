@@ -45,7 +45,7 @@ locals {
 module "vault_configs" {
   source               = "git::https://github.com/Ferlab-Ste-Justine/terraform-cloudinit-templates.git//vault?ref=feat/vault-alerts"
   install_dependencies = var.install_dependencies
-  hostname             = var.name
+  hostname             = var.hostname   
   release_version      = var.release_version
   tls                  = var.tls
   etcd_backend         = var.etcd_backend
